@@ -13,8 +13,9 @@ import { FileTree } from "@/components/editor/FileTree";
 import { CodeEditor } from "@/components/editor/CodeEditor";
 import { PreviewFrame } from "@/components/preview/PreviewFrame";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { HeaderActions } from "@/components/HeaderActions";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImperativePanelHandle } from "react-resizable-panels";
 
@@ -99,17 +100,29 @@ export function MainContent({ user, project }: MainContentProps) {
                         <PanelLeftClose className="h-4 w-4" />
                       )}
                     </Button>
-                    <Tabs
-                    value={activeView}
-                    onValueChange={(v) =>
-                      setActiveView(v as "preview" | "code")
-                    }
-                  >
-                    <TabsList className="bg-white/60 border border-neutral-200/60 p-0.5 h-9 shadow-sm">
-                      <TabsTrigger value="preview" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Preview</TabsTrigger>
-                      <TabsTrigger value="code" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Code</TabsTrigger>
-                    </TabsList>
-                    </Tabs>
+                    <TooltipProvider>
+                      <Tabs
+                        value={activeView}
+                        onValueChange={(v) =>
+                          setActiveView(v as "preview" | "code")
+                        }
+                      >
+                        <TabsList className="bg-white/60 border border-neutral-200/60 p-0.5 h-9 shadow-sm">
+                          <TabsTrigger value="preview" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Preview</TabsTrigger>
+                          <TabsTrigger value="code" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all gap-1.5">
+                            Code
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <HelpCircle className="h-3.5 w-3.5 text-neutral-400 hover:text-neutral-600 transition-colors" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>View and edit generated React source code</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TabsTrigger>
+                        </TabsList>
+                      </Tabs>
+                    </TooltipProvider>
                   </div>
                   <HeaderActions user={user} projectId={project?.id} />
                 </div>
